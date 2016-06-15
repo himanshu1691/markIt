@@ -1,0 +1,23 @@
+{
+    "name": "MarkIt",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+	},
+	"content_scripts": [
+	    {
+	        "matches": ["http://*/*", "https://*/*"],
+	        "js": ["content.js"]
+	    }
+	],
+	"browser_action": {
+    "default_icon": {
+        "19": "icon/icon.jpg",
+        "38": "icon/icon.jpg"
+    },
+    "default_title": "Get the hell out of here man!!",
+    "default_popup": "popup.html"
+	}
+}
