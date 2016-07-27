@@ -6,10 +6,14 @@
     "scripts": ["background.js"],
     "persistent": false
 	},
+    "permissions": [
+          "storage"
+        ],
 	"content_scripts": [
 	    {
 	        "matches": ["http://*/*", "https://*/*"],
-	        "js": ["content.js"]
+            "css": [ "highlight.css" ],
+	        "js": ["jquery.js","jquery.highlight-5.js","content.js"]
 	    }
 	],
 	"browser_action": {
