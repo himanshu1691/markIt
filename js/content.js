@@ -1,5 +1,5 @@
 console.log("CONTENTTT");
-$('h3').highlight('highlight');
+$('body').highlight('highlight');
 /*check if page is saved in storage...
 
 if yes -> get the saved info from that

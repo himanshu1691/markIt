@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "manifest_version": 2,
     "background": {
-    "scripts": ["background.js"],
+    "scripts": ["js/background.js"],
     "persistent": false
 	},
     "permissions": [
@@ -12,8 +12,8 @@
 	"content_scripts": [
 	    {
 	        "matches": ["http://*/*", "https://*/*"],
-            "css": [ "highlight.css" ],
-	        "js": ["jquery.js","jquery.highlight-5.js","content.js"]
+            "css": [ "css/highlight.css" ],
+	        "js": ["js/jquery.js","js/jquery.highlight-5.js","js/content.js"]
 	    }
 	],
 	"browser_action": {
@@ -21,7 +21,7 @@
         "19": "icon/icon.jpg",
         "38": "icon/icon.jpg"
     },
-    "default_title": "Get the hell out of here man!!",
+    "default_title": "MarkIt",
     "default_popup": "popup.html"
 	}
 }
