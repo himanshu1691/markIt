@@ -2,6 +2,7 @@ console.log("Initiating content script");
 
 $('body').mouseup(function(e) {
     if(e.shiftKey){
+        console.log("shift is pressed")
         var text=getSelectedText();
         if (text!=''){
             $('body').highlight(text);}
