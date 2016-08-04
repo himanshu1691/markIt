@@ -2,38 +2,41 @@ console.log("Initiating content script");
 
 console.log(window.location.href)
 var keys = [];
+var new_page = true;
 
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
 
-
 function isNewPage(){
-	var empty_status = false;
 	chrome.storage.sync.get(window.location.href, function (obj) {
-		empty_status = (Object.keys(obj).length == 0)
-		console.log("inside" + empty_status)
-	});
-	console.log("outside"+empty_status)
-	return empty_status
+		new_page = (Object.keys(obj).length == 0)
+		console.log(new_page)
+		if(new_page == false){
+			loadHighlights()
+		}
+	});	
 }
 
+isNewPage();
+loadHighlights();
 function loadHighlights(){
 	console.log("loading saved highlights")
 	chrome.storage.sync.get(null, function(items) {
-    var allKeys = Object.keys(items);
-    console.log(allKeys);
+    //var allKeys = Object.keys(items);
+    console.log(items);
 	});
 }
 
 function highlightText(text){
 	$('body').highlight(text);
-	console.log("is it new page: " +isNewPage())
-	if(isNewPage()){
+	if(new_page){
 		console.log("saving new highlight")
 		pageurl = window.location.href;
-		chrome.storage.sync.set({pageurl: [{"text":text, "color":"yellow"}]}, function() {
-          // Notify that we saved.
-          message('highlight saved');
+		var obj = {};
+		obj[pageurl] = [{"text":text, "color":"yellow"}] ;
+		chrome.storage.sync.set(obj, function() {
+          console.log('highlight saved');
+          new_page = false;
         });
 	}
 	else{
@@ -41,9 +44,6 @@ function highlightText(text){
 	}
 }
 
-if(!isNewPage()){
-    loadHighlights();
-}
 
 $('body').mouseup(function(e) {
     if(keys["72"]){ //h is pressed
