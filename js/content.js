@@ -23,8 +23,14 @@ loadHighlights();
 function loadHighlights(){
 	console.log("loading saved highlights")
 	chrome.storage.sync.get(null, function(items) {
-    //var allKeys = Object.keys(items);
-    console.log(items);
+	//var allKeys = Object.keys(items);
+	//console.log(JSON.stringify(items));
+	//console.log("current");console.log(JSON.stringify(items[window.location.href]))
+	highlights = items[window.location.href]
+	for(entry in highlights){
+		console.log("highlight: "); console.log(highlights[entry])
+		$('body').highlight(highlights[entry]['text']);
+	}
 	});
 }
 
