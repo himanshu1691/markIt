@@ -7,6 +7,7 @@ var new_page = true;
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
 
+//chrome.storage.sync.clear();
 function isNewPage(){
 	chrome.storage.sync.get(window.location.href, function (obj) {
 		new_page = (Object.keys(obj).length == 0)
@@ -41,6 +42,18 @@ function highlightText(text){
 	}
 	else{
 		console.log("not new page")
+		chrome.storage.sync.get(window.location.href, function (obj) {
+                	//console.log(JSON.stringify(obj))
+                        //console.log(JSON.stringify(obj[window.location.href]))
+			tempobj = obj[window.location.href];
+			tempobj.push({"text":text, "color":"yellow"})
+			//console.log(JSON.stringify(tempobj))
+			obj = {}
+			obj[window.location.href] = tempobj;
+			chrome.storage.sync.set(obj, function() {
+          			console.log('highlight saved');
+        		});	
+       		});
 	}
 }
 
