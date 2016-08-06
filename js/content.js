@@ -4,6 +4,20 @@ console.log(window.location.href)
 var keys = [];
 var new_page = true;
 
+function highlight(text)
+{
+	console.log(text)
+    inputText = document.querySelector('body')
+    var innerHTML = inputText.innerHTML
+    var index = innerHTML.indexOf(text);
+    if ( index >= 0 )
+    { 
+        innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+        inputText.innerHTML = innerHTML 
+    }
+
+}
+
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
 
@@ -19,23 +33,26 @@ function isNewPage(){
 }
 
 isNewPage();
+
 loadHighlights();
 function loadHighlights(){
 	console.log("loading saved highlights")
 	chrome.storage.sync.get(null, function(items) {
 	//var allKeys = Object.keys(items);
 	//console.log(JSON.stringify(items));
-	//console.log("current");console.log(JSON.stringify(items[window.location.href]))
+	//console.log("curent");console.log(JSON.stringify(items[window.location.href]))
 	highlights = items[window.location.href]
 	for(entry in highlights){
 		console.log("highlight: "); console.log(highlights[entry])
-		$('body').highlight(highlights[entry]['text']);
+		//$('body').highlight(highlights[entry]['text']);
+		highlight(highlights[entry]['text']);
 	}
 	});
 }
 
 function highlightText(text){
-	$('body').highlight(text);
+	//$('body').highlight(text);
+	highlight(text);
 	if(new_page){
 		console.log("saving new highlight")
 		pageurl = window.location.href;
@@ -63,7 +80,6 @@ function highlightText(text){
 	}
 }
 
-
 $('body').mouseup(function(e) {
     if(keys["72"]){ //h is pressed
         console.log("h is pressed")
@@ -74,11 +90,32 @@ $('body').mouseup(function(e) {
     }
 });
 
-function getSelectedText() {
+/*function getSelectedText() {
     if (window.getSelection) {
+	console.log(window.getSelection().toString());
         return window.getSelection().toString();
     } else if (document.selection) {
+	console.log(document.selection.createRange().text);
         return document.selection.createRange().text;
     }
     return '';
+}*/
+function getSelectedText() {
+    var html = "";
+    if (typeof window.getSelection != "undefined") {
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var container = document.createElement("div");
+            for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                container.appendChild(sel.getRangeAt(i).cloneContents());
+            }
+            html = container.innerHTML;
+        }
+    } else if (typeof document.selection != "undefined") {
+        if (document.selection.type == "Text") {
+            html = document.selection.createRange().htmlText;
+        }
+    }
+    console.log(html)
+    return html;
 }
