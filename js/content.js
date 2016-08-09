@@ -48,7 +48,7 @@ function removeHighlight(text){
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
 
-//chrome.storage.sync.clear();
+chrome.storage.sync.clear();
 function isNewPage(){
 	chrome.storage.sync.get(window.location.href, function (obj) {
 		new_page = (Object.keys(obj).length == 0)
