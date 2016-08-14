@@ -62,25 +62,7 @@ function removeHighlight(text){
 	console.log(getSelectedParent().parentNode.innerHTML)
 	temp = getSelectedParent().parentNode.innerHTML;
 	temp = temp.replace("<span class=\"highlight\">","").replace("</span>","");
-	console.log(temp)
     getSelectedParent().parentNode.innerHTML = temp;
-    //console.log(getSelectedParent().parentNode.innerHTML)
-    /*
-	inputText = getSelectedParent();//document.querySelector('body');
-    var innerHTML = inputText.innerHTML;
-    var index = innerHTML.indexOf(text);
-    if ( index >= 0 )
-    { 
-    	leftIndex = innerHTML.substring(0,index).lastIndexOf("<span class='highlight'>")
-    	leftPart = innerHTML.substring(0,leftIndex)
-    	rightIndex = innerHTML.substring(index+text.length).indexOf("</span>")
-    	console.log("leftpart:"+leftPart)
-    	console.log("midpart"+innerHTML.substring(leftIndex+24,index+rightIndex))
-    	console.log("rightpart"+innerHTML.substring(index+rightIndex+7))
-    	innerHTML = leftPart + innerHTML.substring(leftIndex+24,index+rightIndex) + innerHTML.substring(index+rightIndex+7)
-        //innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
-        inputText.innerHTML = innerHTML 
-    }*/
 }
 
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
@@ -96,9 +78,6 @@ function isNewPage(){
 	});	
 }
 
-//isNewPage();
-
-//loadHighlights(window.location.href);
 function loadHighlights(pageurl){
 	console.log("loading saved highlights")
 	chrome.storage.sync.get(pageurl, function(items) {
@@ -167,16 +146,6 @@ $('body').mouseup(function(e) {
     }
 });
 
-/*function getSelectedText() {
-    if (window.getSelection) {
-	console.log(window.getSelection().toString());
-        return window.getSelection().toString();
-    } else if (document.selection) {
-	console.log(document.selection.createRange().text);
-        return document.selection.createRange().text;
-    }
-    return '';
-}*/
 function getSelectedText() {
     var html = "";
     if (typeof window.getSelection != "undefined") {
@@ -205,12 +174,4 @@ function getSelectedParent() {
   }
   var parent = selection.anchorNode;
   return parent.parentNode;
-  /*while (parent != null && parent.localName != "P") {
-    parent = parent.parentNode;
-  }
-  if (parent == null) {
-    return "";
-  } else {
-    return parent.innerText || parent.textContent;
-  }*/
 }
