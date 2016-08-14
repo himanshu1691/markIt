@@ -1,6 +1,45 @@
 console.log("Initiating content script");
+//chrome.storage.sync.clear();
 
 console.log(window.location.href)
+
+var managementURL =  chrome.extension.getURL('management.html');
+if(window.location.href == managementURL){
+	console.log("management page loaded")
+	getAllHighlights()
+}
+else
+{
+	isNewPage();
+}
+
+function addManagementEntry(itemname, item){
+	console.log("into manage")
+	console.log(item);
+	pageCol = $(".panel").first().clone();
+	pageCol.find('a')[0].innerHTML = itemname;
+	for(entry in item){
+		console.log("entry")
+		pageLi = pageCol.find('li').first().clone();
+		pageLi[0].innerText = item[entry].text;
+		pageCol.find('ul').first().append(pageLi)
+	}
+	pageCol.find('li').first().remove()
+	$( ".panel-group" ).append(pageCol);
+}
+
+function getAllHighlights(){
+	chrome.storage.sync.get(null, function(items) {
+		console.log(items)
+		for(item in items){
+			addManagementEntry(item, items[item])
+		}
+		if(Object.keys(items).length != 0){
+			$(".panel").first().remove()
+		}
+	});
+}
+
 var keys = [];
 var new_page = true;
 
@@ -16,7 +55,6 @@ function highlight(text)
         innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
         inputText.innerHTML = innerHTML 
     }
-
 }
 
 function removeHighlight(text){
@@ -48,27 +86,27 @@ function removeHighlight(text){
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
 
-chrome.storage.sync.clear();
 function isNewPage(){
 	chrome.storage.sync.get(window.location.href, function (obj) {
 		new_page = (Object.keys(obj).length == 0)
 		console.log(new_page)
 		if(new_page == false){
-			loadHighlights()
+			loadHighlights(window.location.href)
 		}
 	});	
 }
 
-isNewPage();
+//isNewPage();
 
-//loadHighlights();
-function loadHighlights(){
+//loadHighlights(window.location.href);
+function loadHighlights(pageurl){
 	console.log("loading saved highlights")
-	chrome.storage.sync.get(window.location.href, function(items) {
+	chrome.storage.sync.get(pageurl, function(items) {
+	console.log(items);
 	//var allKeys = Object.keys(items);
 	//console.log(JSON.stringify(items));
 	//console.log("curent");console.log(JSON.stringify(items[window.location.href]))
-	highlights = items[window.location.href]
+	highlights = items[pageurl]
 	for(entry in highlights){
 		console.log("highlight: "); console.log(highlights[entry])
 		//$('body').highlight(highlights[entry]['text']);
@@ -76,6 +114,7 @@ function loadHighlights(){
 	}
 	});
 }
+
 
 function highlightText(text){
 	//$('body').highlight(text);
