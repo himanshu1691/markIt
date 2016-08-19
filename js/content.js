@@ -63,6 +63,19 @@ function removeHighlight(text){
 	temp = getSelectedParent().parentNode.innerHTML;
 	temp = temp.replace("<span class=\"highlight\">","").replace("</span>","");
     getSelectedParent().parentNode.innerHTML = temp;
+
+    chrome.storage.sync.get(window.location.href, function(items) {
+    	console.log(items);
+    	for(i=0;i<items[window.location.href].length;i++){
+    		console.log("temp:"+ temp + "item: " + items[window.location.href][i].text)
+    		if(items[window.location.href][i].text == temp){
+    			items[window.location.href].splice(i,1)
+    		}
+    	}
+    	console.log("updated obj")
+    	console.log(items)
+    });
+
 }
 
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
@@ -82,13 +95,10 @@ function loadHighlights(pageurl){
 	console.log("loading saved highlights")
 	chrome.storage.sync.get(pageurl, function(items) {
 	console.log(items);
-	//var allKeys = Object.keys(items);
-	//console.log(JSON.stringify(items));
-	//console.log("curent");console.log(JSON.stringify(items[window.location.href]))
 	highlights = items[pageurl]
 	for(entry in highlights){
-		console.log("highlight: "); console.log(highlights[entry])
-		//$('body').highlight(highlights[entry]['text']);
+		console.log("highlight: ");
+		console.log(highlights[entry])
 		highlight(highlights[entry]['text']);
 	}
 	});
@@ -96,7 +106,6 @@ function loadHighlights(pageurl){
 
 
 function highlightText(text){
-	//$('body').highlight(text);
 	highlight(text);
 	if(new_page){
 		console.log("saving new highlight")
@@ -111,11 +120,8 @@ function highlightText(text){
 	else{
 		console.log("not new page")
 		chrome.storage.sync.get(window.location.href, function (obj) {
-                	//console.log(JSON.stringify(obj))
-                        //console.log(JSON.stringify(obj[window.location.href]))
 			tempobj = obj[window.location.href];
 			tempobj.push({"text":text, "color":"yellow"})
-			//console.log(JSON.stringify(tempobj))
 			obj = {}
 			obj[window.location.href] = tempobj;
 			chrome.storage.sync.set(obj, function() {
@@ -140,7 +146,6 @@ $('body').mouseup(function(e) {
         console.log("d is pressed")
         var text=getSelectedText();
         if (text!=''){
-        	//highlightText(text);
         	removeHighlight(text);            
         }
     }
