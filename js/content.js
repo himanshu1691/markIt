@@ -65,16 +65,16 @@ function removeHighlight(text){
     getSelectedParent().parentNode.innerHTML = temp;
 
     chrome.storage.sync.get(window.location.href, function(items) {
-    	console.log(items);
-    	for(i=0;i<items[window.location.href].length;i++){
-    		console.log("temp:"+ temp + "item: " + items[window.location.href][i].text)
-    		if(items[window.location.href][i].text == temp){
-    			items[window.location.href].splice(i,1)
-    		}
-    	}
-    	console.log("updated obj")
-    	console.log(items)
-    });
+    console.log(items);
+	    for(i=0;i<items[window.location.href].length;i++){
+	    	console.log("temp:"+ temp + "item: " + items[window.location.href][i].text)
+	    	if(temp.indexOf(items[window.location.href][i].text) !== -1){
+	    		items[window.location.href].splice(i,1);
+	    		console.log("updated obj");
+	    		console.log(items); 
+	    	} 
+		} 
+	});
 
 }
 
