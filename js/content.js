@@ -61,14 +61,18 @@ function removeHighlight(text){
 	console.log(text);
 	console.log(getSelectedParent().parentNode.innerHTML)
 	temp = getSelectedParent().parentNode.innerHTML;
-	temp = temp.replace("<span class=\"highlight\">","").replace("</span>","");
-    getSelectedParent().parentNode.innerHTML = temp;
+	//temp = temp.replace("<span class=\"highlight\">","").replace("</span>","");
+    //getSelectedParent().parentNode.innerHTML = temp;
 
     chrome.storage.sync.get(window.location.href, function(items) {
     console.log(items);
 	    for(i=0;i<items[window.location.href].length;i++){
 	    	console.log("temp:"+ temp + "item: " + items[window.location.href][i].text)
-	    	if(temp.indexOf(items[window.location.href][i].text) !== -1){
+	    	if(items[window.location.href][i].text.indexOf(text) !== -1){
+	    		spantext = "<span class=\"highlight\">"+items[window.location.href][i].text+"</span>";
+	    		temp = temp.replace(spantext,items[window.location.href][i].text);
+	    		getSelectedParent().parentNode.innerHTML = temp;
+	    		console.log("<span class=\"highlight\">"+items[window.location.href][i].text+"</span>");
 	    		items[window.location.href].splice(i,1);
 	    		console.log("updated obj");
 	    		console.log(items); 
