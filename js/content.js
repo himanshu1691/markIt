@@ -72,10 +72,15 @@ function removeHighlight(text){
 	    		spantext = "<span class=\"highlight\">"+items[window.location.href][i].text+"</span>";
 	    		temp = temp.replace(spantext,items[window.location.href][i].text);
 	    		getSelectedParent().parentNode.innerHTML = temp;
-	    		console.log("<span class=\"highlight\">"+items[window.location.href][i].text+"</span>");
 	    		items[window.location.href].splice(i,1);
 	    		console.log("updated obj");
-	    		console.log(items); 
+
+	    		obj = {}
+				obj[window.location.href] = items[window.location.href];
+				chrome.storage.sync.set(obj, function() {
+	          			console.log('highlights deleted');
+	        		});
+
 	    	} 
 		} 
 	});
