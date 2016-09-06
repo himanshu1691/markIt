@@ -21,7 +21,7 @@ function addManagementEntry(itemname, item){
 	for(entry in item){
 		console.log("entry")
 		pageLi = pageCol.find('li').first().clone();
-		pageLi[0].innerText = item[entry].text;
+		pageLi[0].innerHTML =  "<button class='btn btn-danger deleteButton btn-s pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + item[entry].text;
 		pageCol.find('ul').first().append(pageLi)
 	}
 	pageCol.find('li').first().remove()
