@@ -17,8 +17,10 @@
 	    }
 	],
 	"browser_action": {
-    "icons": {},
     "default_title": "MarkIt",
     "default_popup": "popup.html"
-	}
+	},
+    "icons": {"16": "css/icon/icon_16.png",
+           "48": "css/icon/icon_48.png",
+          "128": "css/icon/icon_128.png"}
 }
