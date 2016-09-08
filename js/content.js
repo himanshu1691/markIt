@@ -7,6 +7,7 @@ var managementURL =  chrome.extension.getURL('management.html');
 
 $("#searchbox").bind("keyup", function() {
 	console.log("searching for text");
+	$('.panel').show();
     var value = $(this).val().toLowerCase();
     $(".list-group-item").each(function() {
         if ($(this).text().search(value) > -1) {
@@ -15,6 +16,16 @@ $("#searchbox").bind("keyup", function() {
         else {
             $(this).hide();
         }
+    });
+
+    $(".list-group").each(function() {
+    	console.log($(this).children(':visible').length);
+    	if($(this).children(':visible').length == 0) {
+		   //$(this).parentsUntil('.panel').hide();
+		   $(this).parent().parent().parent().hide();
+		}
+
+    	
     });
 });
 
