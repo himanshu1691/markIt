@@ -4,6 +4,21 @@ console.log("Initiating content script");
 console.log(window.location.href)
 
 var managementURL =  chrome.extension.getURL('management.html');
+
+$("#searchbox").bind("keyup", function() {
+	console.log("searching for text");
+    var value = $(this).val().toLowerCase();
+    $(".list-group-item").each(function() {
+        if ($(this).text().search(value) > -1) {
+            $(this).show();
+        }
+        else {
+            $(this).hide();
+        }
+    });
+});
+
+
 if(window.location.href == managementURL){
 	console.log("management page loaded")
 	getAllHighlights()
