@@ -6,7 +6,6 @@ console.log(window.location.href)
 var managementURL =  chrome.extension.getURL('management.html');
 
 $("#searchbox").bind("keyup", function() {
-	console.log("searching for text");
 	$('.panel').show();
     var value = $(this).val().toLowerCase();
     $(".list-group-item").each(function() {
@@ -84,8 +83,8 @@ function highlight(text)
 }
 
 function removeHighlight(text){
-	console.log(text);
-	console.log(getSelectedParent().parentNode.innerHTML)
+	//console.log(text);
+	//console.log(getSelectedParent().parentNode.innerHTML)
 	temp = getSelectedParent().parentNode.innerHTML;
 	//temp = temp.replace("<span class=\"highlight\">","").replace("</span>","");
     //getSelectedParent().parentNode.innerHTML = temp;
@@ -112,6 +111,32 @@ function removeHighlight(text){
 	});
 
 }
+
+$(document).on('click', '.deleteButton', function () {
+    // your function here
+    //var delText = $(this).parent().html().replace(/<[^>]*>/g, "");
+
+    var delText = $(this).parent().html().replace('<button class="btn btn-danger deleteButton btn-s pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>',"");
+    console.log(delText);
+    var fromPage =  $(this).parent().parent().parent().parent().parent().find('.panel-heading h4 a').html();
+  //console.log($(this).parent().parent().parent().parent().parent().find('.panel-heading h4 a').html())//.attr('href'));
+
+    chrome.storage.sync.get(fromPage, function(items) {
+	    for(i=0;i<items[fromPage].length;i++){
+	    	if(items[fromPage][i].text.indexOf(delText) !== -1){
+	    		items[fromPage].splice(i,1);
+	    		console.log("updated obj");
+	    		obj = {}
+				obj[fromPage] = items[fromPage];
+				chrome.storage.sync.set(obj, function() {
+	          			console.log('highlights deleted');
+	        		});
+
+	    	} 
+		} 
+	});
+
+});
 
 window.onkeyup = function(e) {keys[e.keyCode]=false;}
 window.onkeydown = function(e) {keys[e.keyCode]=true;}
