@@ -25,18 +25,18 @@
         <div class="col-sm-12">
 <!--         <label for="basic-url">Your vanity URL</label>-->
           <div class="input-group">
-          <span class="input-group-addon" id="searchspan">Search for page</span>
+          <span class="input-group-addon" id="searchspan">Search for highlighted text</span>
           <input type="text" class="form-control" id="searchbox" aria-describedby="basic-addon3">
         </div>
         </div>
       </div>
       <div class="row top-buffer">
-        <div class="col-sm-12">
+        <div class="col-sm-12" id="recordsDiv">
           <div class="panel-group" id="accordion">
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                  <button class="btn btn-primary deletePage btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button><a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                   No Page Saved</a>
                 </h4>
               </div>
@@ -44,7 +44,7 @@
                 <div class="panel-body">
                   <ul class="list-group">
                     <li class="list-group-item">
-                      <button class="btn btn-danger btn-s pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
+                      <button class="btn btn-danger deleteButton btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button>
                       No highlights saved yet
                     </li>
                   </ul>

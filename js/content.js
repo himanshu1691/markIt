@@ -46,7 +46,7 @@ function addManagementEntry(itemname, item){
 	for(entry in item){
 		console.log("entry")
 		pageLi = pageCol.find('li').first().clone();
-		pageLi[0].innerHTML =  "<button class='btn btn-danger deleteButton btn-s pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + item[entry].text;
+		pageLi[0].innerHTML =  "<button class='btn btn-danger deleteEntryButton btn-xs pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + item[entry].text;
 		pageCol.find('ul').first().append(pageLi)
 	}
 	pageCol.find('li').first().remove()
@@ -112,11 +112,10 @@ function removeHighlight(text){
 
 }
 
-$(document).on('click', '.deleteButton', function () {
-    // your function here
+$(document).on('click', '.deleteEntryButton', function () {
     //var delText = $(this).parent().html().replace(/<[^>]*>/g, "");
 
-    var delText = $(this).parent().html().replace('<button class="btn btn-danger deleteButton btn-s pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>',"");
+    var delText = $(this).parent().html().replace('<button class="btn btn-danger deleteEntryButton btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>',"");
     console.log(delText);
     var fromPage =  $(this).parent().parent().parent().parent().parent().find('.panel-heading h4 a').html();
   //console.log($(this).parent().parent().parent().parent().parent().find('.panel-heading h4 a').html())//.attr('href'));
@@ -134,6 +133,21 @@ $(document).on('click', '.deleteButton', function () {
 
 	    	} 
 		} 
+	});
+
+});
+
+$(document).on('click', '.deletePage', function () {
+    //var delText = $(this).parent().html().replace(/<[^>]*>/g, "");
+    var page = $(this).parent().find('a')[0].innerText;
+
+    chrome.storage.sync.remove(page, function(items) {
+	    if (chrome.runtime.lastError) {
+            console.log("unable to delete object");
+        }
+        else{
+        	console.log("object deleted");
+        }
 	});
 
 });
