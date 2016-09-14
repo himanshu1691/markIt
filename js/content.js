@@ -1,7 +1,60 @@
 console.log("Initiating content script");
 //chrome.storage.sync.clear();
 
-console.log(window.location.href)
+
+var delta = 500;
+var lastKeypressTime = 0;
+var highlightEnabled = false;
+var deleteEnabled = false;
+function KeyHandler(event)
+{
+   if ( event.keyCode == 72 )
+   {
+      var thisKeypressTime = new Date();
+      if ( thisKeypressTime - lastKeypressTime <= delta )
+      {
+        enableHighlight();
+        // optional - if we'd rather not detect a triple-press
+        // as a second double-press, reset the timestamp
+        thisKeypressTime = 0;
+      }
+      lastKeypressTime = thisKeypressTime;
+   }
+   else if ( event.keyCode == 68 )
+   {
+      var thisKeypressTime = new Date();
+      if ( thisKeypressTime - lastKeypressTime <= delta )
+      {
+        enableDelete();
+        // optional - if we'd rather not detect a triple-press
+        // as a second double-press, reset the timestamp
+        thisKeypressTime = 0;
+      }
+      lastKeypressTime = thisKeypressTime;
+   }
+}
+
+function enableHighlight(){
+	if(highlightEnabled == true){
+		highlightEnabled = false;
+	}
+	else{
+		highlightEnabled = true;
+		deleteEnabled = false;
+	}
+	console.log(highlightEnabled);
+}
+
+function enableDelete() {
+	if(deleteEnabled == true){
+		deleteEnabled = false;
+	}
+	else{
+		deleteEnabled = true;
+		highlightEnabled = false;
+	}
+	console.log(deleteEnabled);
+}
 
 var managementURL =  chrome.extension.getURL('management.html');
 
@@ -65,7 +118,6 @@ function getAllHighlights(){
 	});
 }
 
-var keys = [];
 var new_page = true;
 
 function highlight(text)
@@ -152,8 +204,7 @@ $(document).on('click', '.deletePage', function () {
 
 });
 
-window.onkeyup = function(e) {keys[e.keyCode]=false;}
-window.onkeydown = function(e) {keys[e.keyCode]=true;}
+document.onkeydown = KeyHandler;
 
 function isNewPage(){
 	chrome.storage.sync.get(window.location.href, function (obj) {
@@ -206,7 +257,7 @@ function highlightText(text){
 }
 
 $('body').mouseup(function(e) {
-    if(keys["72"]){ //h is pressed
+    if(highlightEnabled){ //h is pressed
         console.log("h is pressed")
         var text=getSelectedText();
         if (text!=''){
@@ -216,7 +267,7 @@ $('body').mouseup(function(e) {
 });
 
 $('body').mouseup(function(e) {
-    if(keys["68"]){ //d is pressed
+    if(deleteEnabled){ //d is pressed
         console.log("d is pressed")
         var text=getSelectedText();
         if (text!=''){
