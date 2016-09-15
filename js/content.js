@@ -37,10 +37,12 @@ function KeyHandler(event)
 function enableHighlight(){
 	if(highlightEnabled == true){
 		highlightEnabled = false;
+		chrome.runtime.sendMessage({msg: "Highlight mode deactivated"});
 	}
 	else{
 		highlightEnabled = true;
 		deleteEnabled = false;
+		chrome.runtime.sendMessage({msg: "Highlight mode activated"});
 	}
 	console.log(highlightEnabled);
 }
@@ -48,10 +50,13 @@ function enableHighlight(){
 function enableDelete() {
 	if(deleteEnabled == true){
 		deleteEnabled = false;
+		chrome.runtime.sendMessage({msg: "Delete mode deactivated"});
+
 	}
 	else{
 		deleteEnabled = true;
 		highlightEnabled = false;
+		chrome.runtime.sendMessage({msg: "Delete mode activated"});
 	}
 	console.log(deleteEnabled);
 }
