@@ -1,7 +1,3 @@
-console.log("Initiating content script");
-//chrome.storage.sync.clear();
-
-
 var delta = 500;
 var lastKeypressTime = 0;
 var highlightEnabled = false;
@@ -14,8 +10,6 @@ function KeyHandler(event)
       if ( thisKeypressTime - lastKeypressTime <= delta )
       {
         enableHighlight();
-        // optional - if we'd rather not detect a triple-press
-        // as a second double-press, reset the timestamp
         thisKeypressTime = 0;
       }
       lastKeypressTime = thisKeypressTime;
@@ -73,7 +67,6 @@ $("#searchbox").bind("keyup", function() {
 
     $(".list-group").each(function() {
     	if($(this).children(':visible').length == 0) {
-		   //$(this).parentsUntil('.panel').hide();
 		   $(this).parent().parent().parent().hide();
 		}
 
@@ -93,6 +86,7 @@ else
 function addManagementEntry(itemname, item){
 	pageCol = $(".panel").first().clone();
 	pageCol.find('a')[0].innerHTML = itemname;
+	pageCol.find('a').attr("href", itemname);
 	for(entry in item){
 		pageLi = pageCol.find('li').first().clone();
 		pageLi[0].innerHTML =  "<button class='btn btn-danger deleteEntryButton btn-xs pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + item[entry].text;
@@ -159,6 +153,7 @@ $(document).on('click', '.deleteEntryButton', function () {
 	    		obj = {}
 				obj[fromPage] = items[fromPage];
 				chrome.storage.sync.set(obj, function() {
+					location.reload();
 	        		});
 
 	    	} 
@@ -174,7 +169,7 @@ $(document).on('click', '.deletePage', function () {
 	    if (chrome.runtime.lastError) {
         }
         else{
-        	// object deleted
+        	location.reload();
         }
 	});
 
