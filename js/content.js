@@ -1,10 +1,59 @@
-var delta = 500;
+//settings
+document.onkeypress = KeyHandler;
+
+var delta;
 var lastKeypressTime = 0;
 var highlightEnabled = false;
 var deleteEnabled = false;
+var highlight_key;
+var delete_key;
+var settingsURL =  chrome.extension.getURL('settings.html');
+
+loadSettings();
+
+if(window.location.href == settingsURL){
+	var highlightKey = document.getElementById("highlight_key");
+	var deleteKey = document.getElementById("delete_key");
+	var inputGap = document.getElementById("time_diff");
+
+	document.getElementById("updateButton").addEventListener("click",updateSettings);
+
+}
+
+function loadSettings(){
+	chrome.storage.sync.get(['highlightKey','deleteKey','inputGap']	, function(result) {
+        	if(Object.keys(result).length != 0){
+        		console.log("loading saved settings")
+        		if(window.location.href == settingsURL){
+	        		highlightKey.value = result.highlightKey;
+					deleteKey.value = result.deleteKey;
+					inputGap.value = result.inputGap;
+				}
+        		//load values into form
+        		highlight_key = result.highlightKey.charCodeAt(0);
+        		console.log("hi "+highlight_key)
+        		delete_key = result.deleteKey.charCodeAt(0);
+        		delta = result.inputGap;
+		  	}
+		  	else{
+		  		//saving default settings
+		  		chrome.storage.sync.set({'highlightKey': 'h','deleteKey':'d','inputGap':200 }, function() {
+		  			console.log("default settings saved");
+		        });
+		  	}
+        });
+}
+
+function updateSettings(){
+	chrome.storage.sync.set({'highlightKey': highlightKey.value,'deleteKey':deleteKey.value,'inputGap':inputGap.value }, function() {
+		  			console.log("default settings saved");
+		        });
+}
+
 function KeyHandler(event)
 {
-   if ( event.keyCode == 72 )
+	console.log(event.keyCode)
+   if ( event.keyCode == highlight_key )
    {
       var thisKeypressTime = new Date();
       if ( thisKeypressTime - lastKeypressTime <= delta )
@@ -14,7 +63,7 @@ function KeyHandler(event)
       }
       lastKeypressTime = thisKeypressTime;
    }
-   else if ( event.keyCode == 68 )
+   else if ( event.keyCode == delete_key )
    {
       var thisKeypressTime = new Date();
       if ( thisKeypressTime - lastKeypressTime <= delta )
@@ -175,7 +224,6 @@ $(document).on('click', '.deletePage', function () {
 
 });
 
-document.onkeydown = KeyHandler;
 
 function isNewPage(){
 	chrome.storage.sync.get(window.location.href, function (obj) {
