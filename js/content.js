@@ -36,7 +36,7 @@ chrome.storage.onChanged.addListener(function(changes) {
 });
 
 function loadSettings(){
-	chrome.storage.sync.get(['highlightKey','deleteKey','inputGap']	, function(result) {
+	chrome.storage.local.get(['highlightKey','deleteKey','inputGap']	, function(result) {
         	if(Object.keys(result).length != 0){
         		console.log("loading saved settings")
         		if(window.location.href == settingsURL){
@@ -50,7 +50,7 @@ function loadSettings(){
 		  	}
 		  	else{
 		  		//saving default settings
-		  		chrome.storage.sync.set({'highlightKey': 'h','deleteKey':'d','inputGap':200 }, function() {
+		  		chrome.storage.local.set({'highlightKey': 'h','deleteKey':'d','inputGap':200 }, function() {
 		  			console.log(" default settings saved");
 		        });
 		  	}
@@ -58,7 +58,7 @@ function loadSettings(){
 }
 
 function updateSettings(){
-	chrome.storage.sync.set({'highlightKey': highlightKey.value,'deleteKey':deleteKey.value,'inputGap':inputGap.value }, function() {
+	chrome.storage.local.set({'highlightKey': highlightKey.value,'deleteKey':deleteKey.value,'inputGap':inputGap.value }, function() {
 		  			alert("settings updated");
 		        });
 }
@@ -164,9 +164,11 @@ function addManagementEntry(itemname, item){
 }
 
 function getAllHighlights(){
-	chrome.storage.sync.get(null, function(items) {
+	chrome.storage.local.get(null, function(items) {
 		for(item in items){
-			addManagementEntry(item, items[item])
+			if(item !="deleteKey" && item !="highlightKey" && item != "inputGap"){
+				addManagementEntry(item, items[item]);
+			}	
 		}
 		if(Object.keys(items).length != 0){
 			$(".panel").first().remove()
@@ -190,7 +192,7 @@ function highlight(text)
 
 function removeHighlight(text){
 	temp = getSelectedParent().parentNode.innerHTML;
-    chrome.storage.sync.get(window.location.href, function(items) {
+    chrome.storage.local.get(window.location.href, function(items) {
 	    for(i=0;i<items[window.location.href].length;i++){
 	    	if(items[window.location.href][i].text.indexOf(text) !== -1){
 	    		spantext = "<span class=\"highlight\">"+items[window.location.href][i].text+"</span>";
@@ -199,7 +201,7 @@ function removeHighlight(text){
 	    		items[window.location.href].splice(i,1);
 	    		obj = {}
 				obj[window.location.href] = items[window.location.href];
-				chrome.storage.sync.set(obj, function() {
+				chrome.storage.local.set(obj, function() {
 	        		});
 
 	    	} 
@@ -213,13 +215,13 @@ $(document).on('click', '.deleteEntryButton', function () {
     var delText = $(this).parent().html().replace('<button class="btn btn-danger deleteEntryButton btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>',"");
     var fromPage =  $(this).parent().parent().parent().parent().parent().find('.panel-heading h4 a').html();
 
-    chrome.storage.sync.get(fromPage, function(items) {
+    chrome.storage.local.get(fromPage, function(items) {
 	    for(i=0;i<items[fromPage].length;i++){
 	    	if(items[fromPage][i].text.indexOf(delText) !== -1){
 	    		items[fromPage].splice(i,1);
 	    		obj = {}
 				obj[fromPage] = items[fromPage];
-				chrome.storage.sync.set(obj, function() {
+				chrome.storage.local.set(obj, function() {
 					location.reload();
 	        		});
 
@@ -232,7 +234,7 @@ $(document).on('click', '.deleteEntryButton', function () {
 $(document).on('click', '.deletePage', function () {
     var page = $(this).parent().find('a')[0].innerText;
 
-    chrome.storage.sync.remove(page, function(items) {
+    chrome.storage.local.remove(page, function(items) {
 	    if (chrome.runtime.lastError) {
         }
         else{
@@ -244,7 +246,7 @@ $(document).on('click', '.deletePage', function () {
 
 
 function isNewPage(){
-	chrome.storage.sync.get(window.location.href, function (obj) {
+	chrome.storage.local.get(window.location.href, function (obj) {
 		new_page = (Object.keys(obj).length == 0)
 		if(new_page == false){
 			loadHighlights(window.location.href)
@@ -253,7 +255,7 @@ function isNewPage(){
 }
 
 function loadHighlights(pageurl){
-	chrome.storage.sync.get(pageurl, function(items) {
+	chrome.storage.local.get(pageurl, function(items) {
 	highlights = items[pageurl]
 	for(entry in highlights){
 		highlight(highlights[entry]['text']);
@@ -268,17 +270,17 @@ function highlightText(text){
 		pageurl = window.location.href;
 		var obj = {};
 		obj[pageurl] = [{"text":text, "color":"yellow"}] ;
-		chrome.storage.sync.set(obj, function() {
+		chrome.storage.local.set(obj, function() {
           new_page = false;
         });
 	}
 	else{
-		chrome.storage.sync.get(window.location.href, function (obj) {
+		chrome.storage.local.get(window.location.href, function (obj) {
 			tempobj = obj[window.location.href];
 			tempobj.push({"text":text, "color":"yellow"})
 			obj = {}
 			obj[window.location.href] = tempobj;
-			chrome.storage.sync.set(obj, function() {
+			chrome.storage.local.set(obj, function() {
         		});	
        		});
 	}
