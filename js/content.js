@@ -25,7 +25,6 @@ chrome.storage.onChanged.addListener(function(changes) {
       if(key == "highlightKey")
       {
       	highlight_key = storageChange.newValue.charCodeAt(0);
-      	console.log("hk "+highlight_key);
       }
       else if(key == "deleteKey"){
       	delete_key = storageChange.newValue.charCodeAt(0);
@@ -52,7 +51,7 @@ function loadSettings(){
 		  	else{
 		  		//saving default settings
 		  		chrome.storage.sync.set({'highlightKey': 'h','deleteKey':'d','inputGap':200 }, function() {
-		  			console.log("default settings saved");
+		  			console.log(" default settings saved");
 		        });
 		  	}
         });
@@ -60,12 +59,18 @@ function loadSettings(){
 
 function updateSettings(){
 	chrome.storage.sync.set({'highlightKey': highlightKey.value,'deleteKey':deleteKey.value,'inputGap':inputGap.value }, function() {
-		  			console.log("default settings saved");
+		  			alert("settings updated");
 		        });
 }
 
 function KeyHandler(event)
 {
+	if($('#highlight_key').is(':focus')){
+		$('#highlight_key').val(String.fromCharCode(event.keyCode));
+	}
+	if($('#delete_key').is(':focus')){
+		$('#delete_key').val(String.fromCharCode(event.keyCode));
+	}
    if ( event.keyCode == highlight_key )
    {
       var thisKeypressTime = new Date();

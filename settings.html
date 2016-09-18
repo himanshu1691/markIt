@@ -2,28 +2,48 @@
 <html>
 <head>
 	<title>Settings Page</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/management.css">
 </head>
 <body>
 	<div id="container">
-		<h2>Settings</h2>
-		<div class="row">
-			<div class="col-sm-12">
-				highlight:<input type="text" name="highlight_key" id="highlight_key"/>
+		<div class="row top-buffer">
+			<div class="col-sm-3">
+				<h2><kbd>Settings</kbd></h2>
 			</div>
-			<div class="col-sm-12">
-				delete:<input type="text" name="delete_key" id="delete_key" />
+		</div>
+		<div class="row top-buffer">
+			<div class="col-sm-6">
+				<div class="form-inline">
+					<label for="highlight_key" class="col-sm-3">Highlight key:</label>
+					<input type="text" class="form-control" readonly="readonly" name="highlight_key" id="highlight_key"/>
+				</div>
 			</div>
-			<div class="col-sm-12">
-				time:<input type="text" name="time_diff" id="time_diff"/>
+		</div>
+		<div class="row top-buffer">
+			<div class="col-sm-6">
+				<div class="form-inline">
+					<label for="delete_key" class="col-sm-3">Delete Key:</label>
+					<input type="text" class="form-control" readonly="readonly" name="delete_key" id="delete_key" />
+				</div>
 			</div>
-			<div class="col-sm-12">
-				<button id="updateButton">Update Settings</button>	
+		</div>
+		<div class="row top-buffer">
+			<div class="col-sm-6">
+				<div class="form-inline">
+					<label for="time_diff" class="col-sm-3">Activation time gap:</label>
+					<input type="number" class="form-control" name="time_diff" id="time_diff"/>
+				</div>
+			</div>
+		</div>
+		<div class="row top-buffer">
+			<div class="col-sm-3 col-sm-offset-1">
+					<button class="btn btn-primary" id="updateButton">Update Settings</button>	
 			</div>
 		</div>		
 	</div>
 	<script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/content.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/content.js" type="text/javascript"></script>
 </body>
 </html>
