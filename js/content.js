@@ -1,13 +1,12 @@
-//settings
-document.onkeypress = KeyHandler;
-
 var delta;
+var highlight_key;
+var delete_key;
 var lastKeypressTime = 0;
 var highlightEnabled = false;
 var deleteEnabled = false;
-var highlight_key;
-var delete_key;
 var settingsURL =  chrome.extension.getURL('settings.html');
+
+document.onkeypress = KeyHandler;
 
 loadSettings();
 
@@ -20,6 +19,23 @@ if(window.location.href == settingsURL){
 
 }
 
+chrome.storage.onChanged.addListener(function(changes) {
+	for (key in changes) {
+      var storageChange = changes[key];
+      if(key == "highlightKey")
+      {
+      	highlight_key = storageChange.newValue.charCodeAt(0);
+      	console.log("hk "+highlight_key);
+      }
+      else if(key == "deleteKey"){
+      	delete_key = storageChange.newValue.charCodeAt(0);
+      }
+      else if(key == "inputGap"){
+      	delta = storageChange.newValue;
+      }
+  	}
+});
+
 function loadSettings(){
 	chrome.storage.sync.get(['highlightKey','deleteKey','inputGap']	, function(result) {
         	if(Object.keys(result).length != 0){
@@ -29,9 +45,7 @@ function loadSettings(){
 					deleteKey.value = result.deleteKey;
 					inputGap.value = result.inputGap;
 				}
-        		//load values into form
-        		highlight_key = result.highlightKey.charCodeAt(0);
-        		console.log("hi "+highlight_key)
+				highlight_key = result.highlightKey.charCodeAt(0);
         		delete_key = result.deleteKey.charCodeAt(0);
         		delta = result.inputGap;
 		  	}
@@ -52,7 +66,6 @@ function updateSettings(){
 
 function KeyHandler(event)
 {
-	console.log(event.keyCode)
    if ( event.keyCode == highlight_key )
    {
       var thisKeypressTime = new Date();
