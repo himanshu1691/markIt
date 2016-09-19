@@ -20,6 +20,8 @@
     "default_title": "MarkIt",
     "default_popup": "popup.html"
 	},
+    "short_name": "MarkIt",
+    "description": "Highlight lines of text across the webpage using this extension.",
     "icons": {"16": "css/icon/icon_16.png",
            "48": "css/icon/icon_48.png",
           "128": "css/icon/icon_128.png"}
