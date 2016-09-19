@@ -7,7 +7,6 @@
 </head>
 <body>
 	<h3><kbd>Settings</kbd></h3>
-	<span><b>  Note: <br></b>1) Focus on the input field you want to change and press the key you want to change it with.<br>2) Activation time gap is time difference between 2 successive hotkey hits. If the plugin frequently gets activated during your normal typing, consider changing the hotkey or changing the activation gap.</span>
 	<div id="container">
 		<div class="row top-buffer">
 			<div class="col-sm-6">
@@ -29,7 +28,11 @@
 			<div class="col-sm-6">
 				<div class="form-inline">
 					<label for="time_diff" class="col-sm-3">Activation time gap:</label>
-					<input type="number" class="form-control" name="time_diff" id="time_diff"/>
+					<div class="input-group">
+					 	<input type="number" class="form-control" name="time_diff" id="time_diff"/>
+				     	<div class="input-group-addon">ms</div>
+				    </div>
+				    <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Activation time gap is time difference between 2 successive hotkey hits. If the plugin frequently gets activated during your normal typing, consider changing the hotkey or changing the activation gap.">
 				</div>
 			</div>
 		</div>
@@ -38,20 +41,41 @@
 				<button class="btn btn-primary" id="updateButton">Update Settings</button>
 			</div>
 		</div>
-		<br><br>
+		<br>
 		<h3><kbd>Instructions and Limitations</kbd></h3>
-
 		<div class="row top-buffer">
 			<div class="col-sm-9">
 				<ul class="list-group">
-					<li class="list-group-item">Toggle the <b>highlight mode</b> or the <b>delete mode</b> by <b>double tapping</b> the keys selected in the settings</li>
-					<li class="list-group-item">When a particular mode is activated you get a toggle notification</li>
+					<li class="list-group-item">Toggle the <b>highlight mode</b> or the <b>delete mode</b> by <b>double tapping</b> the keys selected in the settings.</li>
+					<li class="list-group-item">When a particular mode is activated you get a toggle notification. Try pressing any hotkey twice.</li>
 					<li class="list-group-item">In highlight mode select the text you want to highlight</li>
-					<li class="list-group-item">In delete mode select as much of the highlighted text as you can to delete that highlight. If you select very less text, the wrong highlight may get deleted</li>
-					<li class="list-group-item">The extension will when you try to highlight text spanning across multiple paragraphs or other html elements. </li>
+					<li class="list-group-item">In delete mode select as much of the highlighted text as you can to delete that highlight. If you select very less text, the wrong highlight may get deleted.</li>
+					<li class="list-group-item">You can see and manage all your highlights on <b>Management page</b>. If you are unable to delete a highlight in delete mode, delete it from the management page.</li>
+					<li class="list-group-item">The extension will not work when you try to highlight text spanning across multiple paragraphs or other html elements. </li>
 				</ul>
 			</div>
-		</div>		
+		</div>
+		<h3><kbd>Help me...</kbd></h3>
+		<div class="row">
+			<div class="col-sm-12 top-buffer">
+	      		<ul class="list-group">
+	      			<li class="list-group-item">
+	      				Get a cup of coffee for the inner night owl	
+	      			</li>
+	      			<li class="list-group-item">
+	      				Get a big-ass monitor
+	      			</li>
+	      			<li class="list-group-item">
+	      				Get a PS4 ;)
+	      			</li>
+	      			<li class="list-group-item">
+	      				Come up with more awesome apps
+	      			</li>
+	      		</ul>
+	      		<button type="button" id="donateButton"><img src="css/paypal.png" alt="PayPal" /></button>
+	      	</div>
+      	</div>
+      	<br><br>
 	</div>
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>

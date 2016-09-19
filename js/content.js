@@ -16,6 +16,7 @@ if(window.location.href == settingsURL){
 	var inputGap = document.getElementById("time_diff");
 
 	document.getElementById("updateButton").addEventListener("click",updateSettings);
+	document.getElementById("donateButton").addEventListener("click",openPaypal);
 
 }
 
@@ -34,6 +35,11 @@ chrome.storage.onChanged.addListener(function(changes) {
       }
   	}
 });
+
+function openPaypal(){
+	var newURL =  "https://www.paypal.me/HimanshuJain";
+  	chrome.tabs.create({ url: newURL });
+     }
 
 function loadSettings(){
 	chrome.storage.local.get(['highlightKey','deleteKey','inputGap']	, function(result) {
