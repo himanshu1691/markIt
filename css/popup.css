@@ -80,3 +80,5 @@ select.form-control {
 .btn-save:focus:hover {
   background-color: #2980b9;
 }
+.top-buffer { margin-top:20px; }
+

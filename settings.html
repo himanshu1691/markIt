@@ -6,12 +6,13 @@
 	<link rel="stylesheet" type="text/css" href="css/management.css">
 </head>
 <body>
-	<h1><kbd>Settings</kbd></h1>
+	<h3><kbd>Settings</kbd></h3>
+	<span><b>  Note: <br></b>1) Focus on the input field you want to change and press the key you want to change it with.<br>2) Activation time gap is time difference between 2 successive hotkey hits. If the plugin frequently gets activated during your normal typing, consider changing the hotkey or changing the activation gap.</span>
 	<div id="container">
 		<div class="row top-buffer">
 			<div class="col-sm-6">
 				<div class="form-inline">
-					<label for="highlight_key" class="col-sm-3">Highlight key:</label>
+					<label for="highlight_key" class="col-sm-3">Highlight hotkey:</label>
 					<input type="text" class="form-control" readonly="readonly" name="highlight_key" id="highlight_key"/>
 				</div>
 			</div>
@@ -19,7 +20,7 @@
 		<div class="row top-buffer">
 			<div class="col-sm-6">
 				<div class="form-inline">
-					<label for="delete_key" class="col-sm-3">Delete Key:</label>
+					<label for="delete_key" class="col-sm-3">Delete hotkey:</label>
 					<input type="text" class="form-control" readonly="readonly" name="delete_key" id="delete_key" />
 				</div>
 			</div>
@@ -33,8 +34,22 @@
 			</div>
 		</div>
 		<div class="row top-buffer">
-			<div class="col-sm-3 col-sm-offset-1">
-					<button class="btn btn-primary" id="updateButton">Update Settings</button>	
+			<div class="col-sm-6">
+				<button class="btn btn-primary" id="updateButton">Update Settings</button>
+			</div>
+		</div>
+		<br><br>
+		<h3><kbd>Instructions and Limitations</kbd></h3>
+
+		<div class="row top-buffer">
+			<div class="col-sm-9">
+				<ul class="list-group">
+					<li class="list-group-item">Toggle the <b>highlight mode</b> or the <b>delete mode</b> by <b>double tapping</b> the keys selected in the settings</li>
+					<li class="list-group-item">When a particular mode is activated you get a toggle notification</li>
+					<li class="list-group-item">In highlight mode select the text you want to highlight</li>
+					<li class="list-group-item">In delete mode select as much of the highlighted text as you can to delete that highlight. If you select very less text, the wrong highlight may get deleted</li>
+					<li class="list-group-item">The extension will when you try to highlight text spanning across multiple paragraphs or other html elements. </li>
+				</ul>
 			</div>
 		</div>		
 	</div>

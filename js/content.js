@@ -188,6 +188,7 @@ function highlight(text)
         innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
         inputText.innerHTML = innerHTML 
     }
+    return index
 }
 
 function removeHighlight(text){
@@ -265,7 +266,11 @@ function loadHighlights(pageurl){
 
 
 function highlightText(text){
-	highlight(text);
+	findStatus = highlight(text);
+	if(findStatus == -1){
+		alert("unable to save highlight. You possibly selected text over multiple elements")
+		return;
+	}
 	if(new_page){
 		pageurl = window.location.href;
 		var obj = {};

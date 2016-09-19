@@ -1,3 +1,24 @@
 .top-buffer { margin-top:20px; }
 
 .deleteEntryButton,.deletePage{margin-right: 20px;}
+
+body{
+  background: url(../css/straws.png);
+  margin: 10px;
+}
+
+.list-group {
+    list-style: decimal inside;
+}
+
+.list-group-item {
+    display: list-item;
+}
+
+#updateButton{
+	margin-left: 10px;
+}
+
+h3 span{
+	padding-top:5px;
+}
