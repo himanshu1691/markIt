@@ -58,6 +58,11 @@ function loadSettings(){
 		  		//saving default settings
 		  		chrome.storage.local.set({'highlightKey': 'h','deleteKey':'d','inputGap':200 }, function() {
 		  			console.log(" default settings saved");
+		  			if(window.location.href == settingsURL){
+		  				highlightKey.value = 'h';
+						deleteKey.value = 'd';
+						inputGap.value = 200;
+		  			}
 		        });
 		  	}
         });
