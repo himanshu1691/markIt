@@ -7,11 +7,11 @@ body{
   margin: 10px;
 }
 
-.list-group {
-    list-style: decimal inside;
+#inst_list,#help_list{
+	list-style: decimal inside;
 }
 
-.list-group-item {
+#inst_list >.list-group-item, #help_list >.list-group-item  {
     display: list-item;
 }
 
@@ -21,4 +21,8 @@ body{
 
 h3 span{
 	padding-top:5px;
+}
+
+.glyphicon-trash{
+	padding-right: 5px;
 }

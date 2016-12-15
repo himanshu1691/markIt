@@ -1,7 +1,8 @@
 @font-face {
-    font-family: 'Glyphicons Halflings';
-    src: url('/fonts/glyphicons-halflings-regular.eot');
+  font-family: 'Glyphicons Halflings';
+  src: url('/fonts/glyphicons-halflings-regular.eot');
 }
+
 .markit-body {
   width: 150px;
   background: url(../css/straws.png);
@@ -80,5 +81,179 @@ select.form-control {
 .btn-save:focus:hover {
   background-color: #2980b9;
 }
-.top-buffer { margin-top:20px; }
 
+.top-buffer {
+  margin-top: 20px;
+}
+
+
+/* The switch - the box around the slider */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  height: 16px;
+  width: 60px;
+  padding: 5px;
+  margin: 0 3px 20px;
+  /*border-radius*/
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  border-radius: 40px;
+}
+
+label.switch:after {
+    content: 'OFF';
+    position: absolute;
+    color: #fff;
+    z-index: 3;
+    right: 8px;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 0 1px 0px rgba(0,0,0,.4);
+}
+
+label.switch:before {
+    content: 'ON';
+    position: absolute;
+    color: #fff;
+    z-index: 4;
+    left: 8px;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 0 1px 0px rgba(0,0,0,.4);
+}
+
+
+/* Hide default HTML checkbox */
+
+.switch input {
+  display: none;
+}
+
+
+/* The slider */
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  /*linear-gradient*/
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(#878787, 0.3), color-stop(#919191, 0.6));
+  background: -webkit-linear-gradient(top, #878787 30%, #919191 60%);
+  background: -moz-linear-gradient(top, #878787 30%, #919191 60%);
+  background: -o-linear-gradient(top, #878787 30%, #919191 60%);
+  background: linear-gradient(top, #878787 30%, #919191 60%);
+  /*box-shadow*/
+  -webkit-box-shadow: 0 0px 1px 2px rgba(255, 255, 255, .6), 1px -1px 1px 1px rgba(0, 0, 0, .4), 0 1px 1px rgba(255, 255, 255, .4), inset 0 4px 10px rgba(0, 0, 0, .2);
+  -moz-box-shadow: 0 0px 1px 2px rgba(255, 255, 255, .6), 1px -1px 1px 1px rgba(0, 0, 0, .4), 0 1px 1px rgba(255, 255, 255, .4), inset 0 4px 10px rgba(0, 0, 0, .2);
+  box-shadow: 0 0px 1px 2px rgba(255, 255, 255, .6), 1px -1px 1px 1px rgba(0, 0, 0, .4), 0 1px 1px rgba(255, 255, 255, .4), inset 0 4px 10px rgba(0, 0, 0, .2);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: -4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  /*linear-gradient*/
+  background: -webkit-gradient(linear, left top, left bottom, from(#fefefe), color-stop(#e7e7e7, 0.45), color-stop(#d7d7d7, 0.55), to(#c7c7c7));
+  background: -webkit-linear-gradient(top, #fefefe, #e7e7e7 45%, #d7d7d7 55%, #c7c7c7);
+  background: -moz-linear-gradient(top, #fefefe, #e7e7e7 45%, #d7d7d7 55%, #c7c7c7);
+  background: -o-linear-gradient(top, #fefefe, #e7e7e7 45%, #d7d7d7 55%, #c7c7c7);
+  background: linear-gradient(top, #fefefe, #e7e7e7 45%, #d7d7d7 55%, #c7c7c7);
+  z-index: 4;
+  margin: -4px 0;
+  /*border-radius*/
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  /*box-shadow*/
+  -webkit-box-shadow: 0 10px 10px rgba(0, 0, 0, .15), 0 1px 0 #ccc, 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 1px #999;
+  -moz-box-shadow: 0 10px 10px rgba(0, 0, 0, .15), 0 1px 0 #ccc, 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 1px #999;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, .15), 0 1px 0 #ccc, 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 1px #999;
+  /*transition*/
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear;
+}
+
+.slider:after {
+  position: absolute;
+  display: block;
+  content: '';
+  width: 16px;
+  height: 16px;
+  z-index: 5;
+  -webkit-transition: .33s;
+  transition: .33s;
+  left: -8px;
+  /*linear-gradient*/
+  background: -webkit-gradient(linear, left bottom, left top, from(#fefefe), color-stop(#e7e7e7, 0.33), color-stop(#d7d7d7, 0.67), to(#c7c7c7));
+  background: -webkit-linear-gradient(bottom, #fefefe, #e7e7e7, #d7d7d7, #c7c7c7);
+  background: -moz-linear-gradient(bottom, #fefefe, #e7e7e7, #d7d7d7, #c7c7c7);
+  background: -o-linear-gradient(bottom, #fefefe, #e7e7e7, #d7d7d7, #c7c7c7);
+  background: linear-gradient(bottom, #fefefe, #e7e7e7, #d7d7d7, #c7c7c7);
+  /*border-radius*/
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
+  margin: 4px 11px;
+  /*box-shadow*/
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+  /*linear-gradient*/
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(#8faf35, 0.3), color-stop(#a7c150, 0.6));
+  background: -webkit-linear-gradient(top, #48811b 30%, #4ea61f 60%);
+  background: -moz-linear-gradient(top, #48811b 30%, #4ea61f 60%);
+  background: -o-linear-gradient(top, #48811b 30%, #4ea61f 60%);
+  background: linear-gradient(top, #48811b 30%, #4ea61f 60%);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(47px);
+  -ms-transform: translateX(47px);
+  transform: translateX(47px);
+}
+
+input:checked + .slider:after {
+  -webkit-transform: translateX(48px);
+  -ms-transform: translateX(48px);
+  transform: translateX(48px);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

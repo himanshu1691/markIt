@@ -6,9 +6,98 @@ var highlightEnabled = false;
 var deleteEnabled = false;
 var settingsURL =  chrome.extension.getURL('settings.html');
 
-document.onkeypress = KeyHandler;
 
 loadSettings();
+stopPlugin();
+
+chrome.extension.onMessage.addListener(
+function (msg, sender, sendResponse) {
+    if (msg.action == "togglePlugin") {
+        if(msg.OnOffState == false){
+        	$(document).unbind("keypress",KeyHandler);
+        	highlightEnabled = false;
+        	deleteEnabled = false;
+        }
+        else{
+	    		$(document).bind("keypress",KeyHandler);
+	    }
+    	chrome.storage.local.get('urlfilter', function(items) {
+
+	    for(i=0;i<items['urlfilter'].length;i++){
+	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
+	    		//dont activate keypress
+	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
+	    	} 
+	    	else{
+	    		$(document).bind("keypress",KeyHandler);
+	    	}
+		} 
+		});
+    	
+    
+    }
+    if (msg.action == "urlFILTER") {
+    	console.log("URL checking on content page");
+    	chrome.storage.local.get('urlfilter', function(items) {
+    	console.log(items);
+    	if(items['urlfilter'].length == 0){
+    		console.log("activating markit if global settings is ON");
+	    		chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
+					console.log(response)
+				    if (response == true) {
+				    	console.log("plugin is activated on this page");
+     	    			$(document).bind("keypress",KeyHandler);
+				    }
+				});
+    	}
+	    for(i=0;i<items['urlfilter'].length;i++){
+	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
+	    		//dont activate keypress
+	    		$(document).unbind("keypress",KeyHandler);
+	        	highlightEnabled = false;
+	        	deleteEnabled = false;
+	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
+	    	} 
+	    	else{
+	    		console.log("activating markit if global settings is ON");
+	    		chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
+					console.log(response)
+				    if (response == true) {
+				    	console.log("plugin is activated on this page");
+     	    			$(document).bind("keypress",KeyHandler);
+				    }
+				});
+	    		
+	    	}
+		} 
+		});
+    }
+    
+});
+
+function stopPlugin(){
+	chrome.storage.local.get('urlfilter', function(items) {
+		if(items['urlfilter'].length == 0){
+			$(document).bind("keypress",KeyHandler);
+		}
+	    for(i=0;i<items['urlfilter'].length;i++){
+	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
+	    		//dont activate keypress
+	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
+	    	} 
+	    	else{
+	    		//GET plugin on/off status
+				chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
+					console.log(response)
+				    if (response == true) {
+				    	console.log("plugin is activated on this page");
+     	    			$(document).bind("keypress",KeyHandler);
+				    }
+				});
+	    	}
+		} 
+	});
+}
 
 if(window.location.href == settingsURL){
 	var highlightKey = document.getElementById("highlight_key");
@@ -17,6 +106,7 @@ if(window.location.href == settingsURL){
 
 	document.getElementById("updateButton").addEventListener("click",updateSettings);
 	document.getElementById("donateButton").addEventListener("click",openPaypal);
+	document.getElementById("filterURL").addEventListener("click",addFilter);		
 
 }
 
@@ -35,6 +125,19 @@ chrome.storage.onChanged.addListener(function(changes) {
       }
   	}
 });
+
+function addFilter(){
+	$('#filterUL').append('<li class="list-group-item">' + "<button class='btn btn-danger deleteURL btn-xs pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + $('#filter_add_key').val()  +'</li>');
+	chrome.storage.local.get('urlfilter', function(result) {
+		urls = result.urlfilter;
+		urls.push($('#filter_add_key').val());
+		obj = {}
+		obj['urlfilter'] = urls;
+		chrome.storage.local.set(obj, function() {
+				chrome.extension.sendMessage({ cmd: "initiateUrlCheck" }); //toggle url check on all pages
+    		});
+    });
+}
 
 function openPaypal(){
 	var newURL =  "https://www.paypal.me/HimanshuJain";
@@ -66,6 +169,22 @@ function loadSettings(){
 		        });
 		  	}
         });
+
+	chrome.storage.local.get('urlfilter', function(result) {
+		urls = result.urlfilter;
+		if(urls == undefined){
+			chrome.storage.local.set({'urlfilter': []}, function() {
+		  			console.log(" default settings saved");
+		        });
+		}
+		else{
+			var arrayLength = urls.length;
+			for (var i = 0; i < arrayLength; i++) {
+				$('#filterUL').append('<li class="list-group-item">' + "<button class='btn btn-danger deleteURL btn-xs pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + urls[i]  +'</li>');
+
+			}	
+		}
+    });
 }
 
 function updateSettings(){
@@ -162,6 +281,8 @@ else
 }
 
 function addManagementEntry(itemname, item){
+	console.log(itemname);
+	if(itemname == "urlfilter"){return;}
 	pageCol = $(".panel").first().clone();
 	pageCol.find('a')[0].innerHTML = itemname;
 	pageCol.find('a').attr("href", itemname);
@@ -243,6 +364,28 @@ $(document).on('click', '.deleteEntryButton', function () {
 
 });
 
+$(document).on('click', '.deleteURL', function () {
+
+    var delText = $(this).parent().html().replace('<button class="btn btn-danger deleteURL btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button>',"");
+    chrome.storage.local.get('urlfilter', function(items) {
+
+	    for(i=0;i<items['urlfilter'].length;i++){
+	    	if(items['urlfilter'][i].indexOf(delText) !== -1){
+	    		items['urlfilter'].splice(i,1);
+	    		obj = {}
+				obj['urlfilter'] = items['urlfilter'];
+				chrome.storage.local.set(obj, function() {
+					chrome.extension.sendMessage({ cmd: "initiateUrlCheck" }); //toggle url check on all pages
+					location.reload();
+
+	        		});
+
+	    	} 
+		} 
+	});
+
+});
+
 $(document).on('click', '.deletePage', function () {
     var page = $(this).parent().find('a')[0].innerText;
 
@@ -279,7 +422,7 @@ function loadHighlights(pageurl){
 function highlightText(text){
 	findStatus = highlight(text);
 	if(findStatus == -1){
-		alert("unable to save highlight. You possibly selected text over multiple elements")
+		console.log("unable to save highlight. You possibly selected text over multiple elements")
 		return;
 	}
 	if(new_page){
