@@ -16,9 +16,16 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="input-group">
-          <span class="input-group-addon" id="searchspan">Search for highlighted text</span>
-          <input type="text" class="form-control" id="searchbox" aria-describedby="basic-addon3">
-        </div>
+            <span class="input-group-addon" id="searchspan">Search for highlighted text</span>
+            <input type="text" class="form-control" id="searchbox" aria-describedby="basic-addon3">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon" id="searchspan">Import highlight</span>
+            <label class="btn btn-default btn-file">
+              <span class="glyphicon glyphicon-open-file"><input type="file" id="import_page" class="hidden"></span> 
+          </label>
+          </div>
         </div>
       </div>
       <div class="row top-buffer">
@@ -29,6 +36,7 @@
                 <h4 class="panel-title">
                   <button class="btn btn-primary deletePage btn-xs pull-xs-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button><a target="_blank">
                   No Page Saved</a>
+                  <button class="btn btn-primary exportPage btn-xs pull-xs-right" data-title="Export" data-toggle="modal" data-target="#delete" >export</button>
                 </h4>
               </div>
               <div id="collapse1" class="panel-collapse collapse in">

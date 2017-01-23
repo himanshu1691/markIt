@@ -10,11 +10,40 @@ chrome.runtime.onMessage.addListener(
     });
 });
 
+
+  function onInstall() {
+    console.log("Extension Installed");
+    chrome.tabs.create({url:"settings.html"});
+  }
+
+  function onUpdate() {
+    console.log("Extension Updated");
+    chrome.tabs.create({url:"changelog.html"});
+  }
+
+  function getVersion() {
+    var details = chrome.app.getDetails();
+    return details.version;
+  }
+
+  // Check if the version has changed.
+  var currVersion = getVersion();
+  var prevVersion = localStorage['version']
+  if (currVersion != prevVersion) {
+    // Check if we just installed this extension.
+    if (typeof prevVersion == 'undefined') {
+      onInstall();
+    } else {
+      onUpdate();
+    }
+    localStorage['version'] = currVersion;
+  }
+
 chrome.runtime.setUninstallURL("https://chrome.google.com/webstore/detail/markit-text-highlighter-a/gppkdamjnjjjbfpiopekeccgaigakcng/support", 
     function(){console.log("extension uninstalled. opening feedback url");}
     )
 
-var isExtensionOn = true;
+var isExtensionOn = false;
 
 chrome.extension.onMessage.addListener(
 function (request, sender, sendResponse) {

@@ -78,7 +78,11 @@ function (msg, sender, sendResponse) {
 function stopPlugin(){
 	chrome.storage.local.get('urlfilter', function(items) {
 		if(items['urlfilter'].length == 0){
-			$(document).bind("keypress",KeyHandler);
+			chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
+				if (response == true) {
+		    			$(document).bind("keypress",KeyHandler);
+			    }
+			});
 		}
 	    for(i=0;i<items['urlfilter'].length;i++){
 	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
@@ -399,6 +403,39 @@ $(document).on('click', '.deletePage', function () {
 
 });
 
+$(document).on('click', '.exportPage', function () {
+    var page = $(this).parent().find('a')[0].innerText;
+
+    chrome.storage.local.get(page, function(items) {
+	    console.log(items);
+	    let docContent = JSON.stringify(items);
+		let doc = URL.createObjectURL( new Blob([docContent], {type: 'application/octet-binary'}) );
+		chrome.downloads.download({ url: doc, filename: "exported_highlight.json", conflictAction: 'overwrite', saveAs: true });
+	});
+
+
+});
+
+$(document).on('change', '#import_page', function(event) {
+	var uploadedFile = event.target.files[0]; 
+
+    if (uploadedFile) {
+        var readFile = new FileReader();
+        readFile.onload = function(e) { 
+            var contents = e.target.result;
+            var json = JSON.parse(contents);
+            chrome.storage.local.set(json, function() {
+		      alert("highlight imported");
+		      location.reload();
+		    });
+        };
+        readFile.readAsText(uploadedFile);
+    } else { 
+        alert("Failed to load file");
+    }
+	
+
+});
 
 function isNewPage(){
 	chrome.storage.local.get(window.location.href, function (obj) {
