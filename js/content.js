@@ -27,14 +27,14 @@ function (msg, sender, sendResponse) {
 	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
 	    		//dont activate keypress
 	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
-	    	} 
+	    	}
 	    	else{
 	    		$(document).bind("keypress",KeyHandler);
 	    	}
-		} 
+		}
 		});
-    	
-    
+
+
     }
     if (msg.action == "urlFILTER") {
     	console.log("URL checking on content page");
@@ -57,7 +57,7 @@ function (msg, sender, sendResponse) {
 	        	highlightEnabled = false;
 	        	deleteEnabled = false;
 	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
-	    	} 
+	    	}
 	    	else{
 	    		console.log("activating markit if global settings is ON");
 	    		chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
@@ -67,12 +67,12 @@ function (msg, sender, sendResponse) {
      	    			$(document).bind("keypress",KeyHandler);
 				    }
 				});
-	    		
+
 	    	}
-		} 
+		}
 		});
     }
-    
+
 });
 
 function stopPlugin(){
@@ -88,7 +88,7 @@ function stopPlugin(){
 	    	if(window.location.href.indexOf(items['urlfilter'][i]) !== -1){
 	    		//dont activate keypress
 	    		console.log("This page is in Markit's filter URLs. Extension will not work here.Check Settings")
-	    	} 
+	    	}
 	    	else{
 	    		//GET plugin on/off status
 				chrome.extension.sendMessage({ cmd: "getOnOffState" }, function (response) {
@@ -99,7 +99,7 @@ function stopPlugin(){
 				    }
 				});
 	    	}
-		} 
+		}
 	});
 }
 
@@ -110,7 +110,7 @@ if(window.location.href == settingsURL){
 
 	document.getElementById("updateButton").addEventListener("click",updateSettings);
 	document.getElementById("donateButton").addEventListener("click",openPaypal);
-	document.getElementById("filterURL").addEventListener("click",addFilter);		
+	document.getElementById("filterURL").addEventListener("click",addFilter);
 
 }
 
@@ -186,7 +186,7 @@ function loadSettings(){
 			for (var i = 0; i < arrayLength; i++) {
 				$('#filterUL').append('<li class="list-group-item">' + "<button class='btn btn-danger deleteURL btn-xs pull-xs-right' data-title='Delete' data-toggle='modal' data-target='#delete' ><span class='glyphicon glyphicon-trash'></span></button>" + urls[i]  +'</li>');
 
-			}	
+			}
 		}
     });
 }
@@ -271,7 +271,7 @@ $("#searchbox").bind("keyup", function() {
 		   $(this).parent().parent().parent().hide();
 		}
 
-    	
+
     });
 });
 
@@ -304,7 +304,7 @@ function getAllHighlights(){
 		for(item in items){
 			if(item !="deleteKey" && item !="highlightKey" && item != "inputGap"){
 				addManagementEntry(item, items[item]);
-			}	
+			}
 		}
 		if(Object.keys(items).length != 0){
 			$(".panel").first().remove()
@@ -320,9 +320,9 @@ function highlight(text)
     var innerHTML = inputText.innerHTML
     var index = innerHTML.indexOf(text);
     if ( index >= 0 )
-    { 
-        innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
-        inputText.innerHTML = innerHTML 
+    {
+        innerHTML = innerHTML.substring(0,index) + "<span class='highlight_markit'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+        inputText.innerHTML = innerHTML
     }
     return index
 }
@@ -332,7 +332,7 @@ function removeHighlight(text){
     chrome.storage.local.get(window.location.href, function(items) {
 	    for(i=0;i<items[window.location.href].length;i++){
 	    	if(items[window.location.href][i].text.indexOf(text) !== -1){
-	    		spantext = "<span class=\"highlight\">"+items[window.location.href][i].text+"</span>";
+	    		spantext = "<span class=\"highlight_markit\">"+items[window.location.href][i].text+"</span>";
 	    		temp = temp.replace(spantext,items[window.location.href][i].text);
 	    		getSelectedParent().parentNode.innerHTML = temp;
 	    		items[window.location.href].splice(i,1);
@@ -341,8 +341,8 @@ function removeHighlight(text){
 				chrome.storage.local.set(obj, function() {
 	        		});
 
-	    	} 
-		} 
+	    	}
+		}
 	});
 
 }
@@ -362,8 +362,8 @@ $(document).on('click', '.deleteEntryButton', function () {
 					location.reload();
 	        		});
 
-	    	} 
-		} 
+	    	}
+		}
 	});
 
 });
@@ -384,8 +384,8 @@ $(document).on('click', '.deleteURL', function () {
 
 	        		});
 
-	    	} 
-		} 
+	    	}
+		}
 	});
 
 });
@@ -417,11 +417,11 @@ $(document).on('click', '.exportPage', function () {
 });
 
 $(document).on('change', '#import_page', function(event) {
-	var uploadedFile = event.target.files[0]; 
+	var uploadedFile = event.target.files[0];
 
     if (uploadedFile) {
         var readFile = new FileReader();
-        readFile.onload = function(e) { 
+        readFile.onload = function(e) {
             var contents = e.target.result;
             var json = JSON.parse(contents);
             chrome.storage.local.set(json, function() {
@@ -430,10 +430,10 @@ $(document).on('change', '#import_page', function(event) {
 		    });
         };
         readFile.readAsText(uploadedFile);
-    } else { 
+    } else {
         alert("Failed to load file");
     }
-	
+
 
 });
 
@@ -443,7 +443,7 @@ function isNewPage(){
 		if(new_page == false){
 			loadHighlights(window.location.href)
 		}
-	});	
+	});
 }
 
 function loadHighlights(pageurl){
@@ -477,7 +477,7 @@ function highlightText(text){
 			obj = {}
 			obj[window.location.href] = tempobj;
 			chrome.storage.local.set(obj, function() {
-        		});	
+        		});
        		});
 	}
 }
@@ -486,7 +486,7 @@ $('body').mouseup(function(e) {
     if(highlightEnabled){ //h is pressed
         var text=getSelectedText();
         if (text!=''){
-        	highlightText(text);            
+        	highlightText(text);
         }
     }
 });
@@ -495,7 +495,7 @@ $('body').mouseup(function(e) {
     if(deleteEnabled){ //d is pressed
         var text=getSelectedText();
         if (text!=''){
-        	removeHighlight(text);            
+        	removeHighlight(text);
         }
     }
 });
